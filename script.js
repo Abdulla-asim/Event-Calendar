@@ -33,7 +33,8 @@ function generateCalendar() {
     if (viewMode === 'monthly') {
         const date = new Date(currentYear, currentMonth, 1);
         const monthName = date.toLocaleString('default', { month: 'long' });
-        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+        /* Going to next month (currentMonth + 1), and then using date = 0 to get the last date of the previous month */
+        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate(); // Trick to get num of days of current month
         
         monthHead.innerHTML = `
             <button id="prev-btn">Previous</button>

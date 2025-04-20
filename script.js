@@ -30,83 +30,36 @@ function generateCalendar() {
     const monthHead = document.createElement('div');
     monthHead.classList.add('month-head');
     
-    if (viewMode === 'monthly') {
-        const date = new Date(currentYear, currentMonth, 1);
-        const monthName = date.toLocaleString('default', { month: 'long' });
-        /* Going to next month (currentMonth + 1), and then using date = 0 to get the last date of the previous month */
-        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate(); // Trick to get num of days of current month
-        
-        monthHead.innerHTML = `
-            <button id="prev-btn">Previous</button>
-            <span>${monthName} ${currentYear}</span>
-            <button id="next-btn">Next</button>
-            <button id="toggle-view-btn">Switch to Weekly</button>
-        `;
-        
-        calendar.appendChild(monthHead);
-        monthHead.querySelector('#prev-btn').addEventListener('click', showPreviousMonth);
-        monthHead.querySelector('#next-btn').addEventListener('click', showNextMonth);
-        monthHead.querySelector('#toggle-view-btn').addEventListener('click', toggleView);
-        
-        for (let i = 1; i <= daysInMonth; i++) {
-            const day = document.createElement('div');
-            day.classList.add('day');
-            day.textContent = i;
-            if (events[`${currentMonth}_${i}`]) {
-                const marker = document.createElement('div');
-                marker.classList.add('event-marker');
-                day.appendChild(marker);
-                day.addEventListener('mouseenter', (e) => showTooltip(e, events[`${currentMonth}_${i}`].title));
-                day.addEventListener('mouseleave', hideTooltip);
-            }
-            day.addEventListener('click', () => openForm(currentMonth, i));
-            month.appendChild(day);
+    const date = new Date(currentYear, currentMonth, 1);
+    const monthName = date.toLocaleString('default', { month: 'long' });
+    /* Going to next month (currentMonth + 1), and then using date = 0 to get the last date of the previous month */
+    const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate(); // Trick to get num of days of current month
+    
+    monthHead.innerHTML = `
+        <button id="prev-btn">Previous</button>
+        <span>${monthName} ${currentYear}</span>
+        <button id="next-btn">Next</button>
+        <button id="toggle-view-btn">Switch to Weekly</button>
+    `;
+    
+    calendar.appendChild(monthHead);
+    monthHead.querySelector('#prev-btn').addEventListener('click', showPreviousMonth);
+    monthHead.querySelector('#next-btn').addEventListener('click', showNextMonth);
+    monthHead.querySelector('#toggle-view-btn').addEventListener('click', toggleView);
+    
+    for (let i = 1; i <= daysInMonth; i++) {
+        const day = document.createElement('div');
+        day.classList.add('day');
+        day.textContent = i;
+        if (events[`${currentMonth}_${i}`]) {
+            const marker = document.createElement('div');
+            marker.classList.add('event-marker');
+            day.appendChild(marker);
+            day.addEventListener('mouseenter', (e) => showTooltip(e, events[`${currentMonth}_${i}`].title));
+            day.addEventListener('mouseleave', hideTooltip);
         }
-    } else { // Weekly view
-        if (!selectedWeekStart) {
-            // Default to the week containing today
-            const today = new Date();
-            const dayOfWeek = today.getDay(); // 0 = Sunday, 6 = Saturday
-            selectedWeekStart = new Date(today);
-            selectedWeekStart.setDate(today.getDate() - dayOfWeek); // Start on Sunday
-        }
-        
-        const weekStart = new Date(selectedWeekStart);
-        const monthName = weekStart.toLocaleString('default', { month: 'long' });
-        const year = weekStart.getFullYear();
-        
-        monthHead.innerHTML = `
-            <button id="prev-btn">Previous</button>
-            <span>Week of ${monthName} ${weekStart.getDate()}, ${year}</span>
-            <button id="next-btn">Next</button>
-            <button id="toggle-view-btn">Switch to Monthly</button>
-        `;
-        
-        calendar.appendChild(monthHead);
-        monthHead.querySelector('#prev-btn').addEventListener('click', showPreviousWeek);
-        monthHead.querySelector('#next-btn').addEventListener('click', showNextWeek);
-        monthHead.querySelector('#toggle-view-btn').addEventListener('click', toggleView);
-        
-        // Generate 7 days starting from weekStart
-        for (let i = 0; i < 7; i++) {
-            const dayDate = new Date(weekStart);
-            dayDate.setDate(weekStart.getDate() + i);
-            const dayMonth = dayDate.getMonth();
-            const dayNum = dayDate.getDate();
-            
-            const day = document.createElement('div');
-            day.classList.add('day');
-            day.textContent = `${dayNum} (${dayDate.toLocaleString('default', { weekday: 'short' })})`; // e.g., "15 (Wed)"
-            if (events[`${dayMonth}_${dayNum}`]) {
-                const marker = document.createElement('div');
-                marker.classList.add('event-marker');
-                day.appendChild(marker);
-                day.addEventListener('mouseenter', (e) => showTooltip(e, events[`${dayMonth}_${dayNum}`].title));
-                day.addEventListener('mouseleave', hideTooltip);
-            }
-            day.addEventListener('click', () => openForm(dayMonth, dayNum));
-            month.appendChild(day);
-        }
+        day.addEventListener('click', () => openForm(currentMonth, i));
+        month.appendChild(day);
     }
     
     calendar.appendChild(month);

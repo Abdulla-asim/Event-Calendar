@@ -44,7 +44,6 @@ function generateCalendar() {
     calendar.appendChild(monthHead);
     monthHead.querySelector('#prev-btn').addEventListener('click', showPreviousMonth);
     monthHead.querySelector('#next-btn').addEventListener('click', showNextMonth);
-    monthHead.querySelector('#toggle-view-btn').addEventListener('click', toggleView);
     
     for (let i = 1; i <= daysInMonth; i++) {
         const day = document.createElement('div');

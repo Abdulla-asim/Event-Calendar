@@ -39,7 +39,6 @@ function generateCalendar() {
         <button id="prev-btn">Previous</button>
         <span>${monthName} ${currentYear}</span>
         <button id="next-btn">Next</button>
-        <button id="toggle-view-btn">Switch to Weekly</button>
     `;
     
     calendar.appendChild(monthHead);

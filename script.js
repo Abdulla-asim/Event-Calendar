@@ -10,7 +10,6 @@ const deleteEventButton = document.getElementById('delete-event-btn');
 let selectedDate = null;
 let events = JSON.parse(localStorage.getItem('events')) || {};
 let viewMode = 'monthly'; // New variable to track view mode
-let selectedWeekStart = null; // For weekly view
 
 const currentDate = new Date();
 const currentYear = currentDate.getFullYear();
@@ -83,29 +82,6 @@ function showNextMonth() {
     generateCalendar();
 }
 
-function showPreviousWeek() {
-    selectedWeekStart.setDate(selectedWeekStart.getDate() - 7);
-    currentMonth = selectedWeekStart.getMonth();
-    currentYear = selectedWeekStart.getFullYear();
-    generateCalendar();
-}
-
-function showNextWeek() {
-    selectedWeekStart.setDate(selectedWeekStart.getDate() + 7);
-    currentMonth = selectedWeekStart.getMonth();
-    currentYear = selectedWeekStart.getFullYear();
-    generateCalendar();
-}
-
-function toggleView() {
-    viewMode = viewMode === 'monthly' ? 'weekly' : 'monthly';
-    if (viewMode === 'weekly' && !selectedWeekStart) {
-        selectedWeekStart = new Date(currentYear, currentMonth, 1);
-        const dayOfWeek = selectedWeekStart.getDay();
-        selectedWeekStart.setDate(selectedWeekStart.getDate() - dayOfWeek); // Start on Sunday
-    }
-    generateCalendar();
-}
 
 // Tooltip functions
 function showTooltip(e, title) {
@@ -123,6 +99,20 @@ function hideTooltip() {
 
 function openForm(month, date) {
     selectedDate = `${month}_${date}`;
+    
+    // Remove 'selected' class from all days
+    document.querySelectorAll('.calendar .day.selected').forEach(day => {
+        day.classList.remove('selected');
+    });
+
+    // Add 'selected' class to the clicked day
+    const days = document.querySelectorAll('.calendar .day');
+    days.forEach(day => {
+        if (parseInt(day.textContent) === date) {
+            day.classList.add('selected');
+        }
+    });
+
     eventTitle.value = events[`${month}_${date}`]?.title || "";
     eventDescription.value = events[`${month}_${date}`]?.description || "";
     if (eventForm)

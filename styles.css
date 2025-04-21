@@ -66,13 +66,12 @@ body {
 }
 
 .form {
-    /* display: none; */
-    display: flex;
-    padding: 2rem;
+    display: none;
+    /* display: flex; */
+    padding: 1.5rem;
     justify-content: center;
     align-items: center;
     border-radius: 0 0 8px 8px;
-    height: 300px;
     width: 500px;
     background-color: rgba(117, 170, 142, 0.668);
     box-shadow: 0 3px 10px rgb(0, 0, 0, 0.6);
@@ -108,16 +107,54 @@ body {
 
 h2, p, span {
     cursor: default;
+    color: #434141;
 }
 
 button {
     cursor: pointer;
-    border-radius: 20px;
+    border-radius: 10px;
     border: none;
     margin: 5px;
-    height: 20px;
+    height: 25px;
 }
 
 button:hover {
     background-color: #ffffff;
+}
+
+#save-event-btn, #delete-event-btn  {
+    width: 50%;
+    padding: 1rem;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+#delete-event-btn {
+    background-color: rgb(189, 31, 31);
+    color: white;
+}
+
+
+.btns-last {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+#event-title {
+    border: none;
+    border-radius: 10px;
+    padding: 0.4rem;
+}
+
+#event-description {
+    border: none;
+    border-radius: 10px;
+    padding: 0.4rem;
+}
+
+.day.selected {
+    background-color: #84c0b3; /* Light blue background */
+    border: none;    
 }
